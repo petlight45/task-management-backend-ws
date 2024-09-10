@@ -24,6 +24,7 @@ io.on("connection", (socket) => {
     logger.info(`New client connected:
         ID: ${socket.id}
         IP Address: ${clientIp}
+        Handshake: ${JSON.stringify(socket.handshake)} 
     `);
     clientSocketEventHandler(socket, notificationPort, authServicePort, logger);
 });
