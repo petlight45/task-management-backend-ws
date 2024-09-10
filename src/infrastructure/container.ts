@@ -8,15 +8,17 @@ import {SocketIoNotificationAdapter} from "../adapters/ws/socket_notification";
 import {MessageQueuePort} from "../core/ports/message_queue";
 import {AuthServiceAdapter} from "../adapters/http/auth";
 import {RabbitMQAdapter} from "../adapters/message_queue/rabbit_mq";
+import {LoggerPort} from "../core/ports/logger";
+import {WinstonLogger} from "../adapters/logger/winston";
 
-//
 type ContainerDependencies = {
     notifyTaskEvents: NotifyTaskEvents;
     notificationPort: SocketNotificationPort;
     authServicePort: AuthServicePort;
     messageQueuePort: MessageQueuePort;
     io: Server | null
-    appConfig: any
+    appConfig: any,
+    logger: LoggerPort
 }
 
 AppConfig.initiate()
@@ -25,11 +27,14 @@ AppConfig.initiate()
 const container: AwilixContainer<ContainerDependencies> = createContainer<ContainerDependencies>();
 
 
-export default container.register({
+container.register({
     notifyTaskEvents: asClass(NotifyTaskEvents).singleton(),
     notificationPort: asClass(SocketIoNotificationAdapter).singleton(),
     authServicePort: asClass(AuthServiceAdapter).singleton(),
     messageQueuePort: asClass(RabbitMQAdapter).singleton(),
     appConfig: asValue(AppConfig),
-    io: asValue(null) // Placeholder, will be set in server.ts,
+    io: asValue(null),// Placeholder, will be set in app.ts,
+    logger: asClass(WinstonLogger).singleton()
 });
+
+export default container;

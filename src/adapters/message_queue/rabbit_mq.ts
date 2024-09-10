@@ -2,21 +2,25 @@ import amqp, {Channel} from "amqplib";
 import {NotifyTaskEvents} from "../../core/usecases/notify_task_events";
 import {MessageQueuePort} from "../../core/ports/message_queue";
 import Task from "../../core/entities/task";
+import {LoggerPort} from "../../core/ports/logger";
 
 type RabbitMQAdapterParams = {
     notifyTaskEvents: NotifyTaskEvents
     appConfig: any
+    logger: LoggerPort
 }
 
 export class RabbitMQAdapter implements MessageQueuePort {
     private notifyTaskEvents;
     private appConfig;
+    private logger;
     channel: Channel | null;
 
 
     constructor(params: RabbitMQAdapterParams) {
         this.notifyTaskEvents = params.notifyTaskEvents;
         this.appConfig = params.appConfig;
+        this.logger = params.logger
         this.channel = null;
     }
 
@@ -27,7 +31,9 @@ export class RabbitMQAdapter implements MessageQueuePort {
         this.channel = channel;
         channel.consume(queueName, (msg) => {
             if (msg !== null) {
-                const task = JSON.parse(msg.content.toString());
+                const message = msg.content.toString()
+                this.logger.info(`Received message from queue | ${message}`)
+                const task = JSON.parse(message);
                 this.routeMessage(task);
                 channel.ack(msg);
             }
