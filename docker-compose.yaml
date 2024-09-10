@@ -10,3 +10,5 @@ services:
       - .env
     ports:
       - 5002:5000
+    volumes:
+      - ../logs/taskman/ws_server/:/app/logs
