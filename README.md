@@ -15,7 +15,7 @@ This project is a Node.js Socket.io server built with Express and TypeScript, fo
 - [Configuration](#configuration)
 - [Running the Server](#running-the-server)
 - [Testing](#testing)
-- [Postman Documentation](#postman-documentation)
+- [Events Documentation](#events-documentation)
 
 ## Installation
 
@@ -74,7 +74,7 @@ Or this, in case the above did not work
     npm test
     
     
-## Postman Documentation
+## Events Documentation
  Events  to listen for; 
  
       ```bash
