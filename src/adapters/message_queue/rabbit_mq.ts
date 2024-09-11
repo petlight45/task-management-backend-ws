@@ -24,6 +24,14 @@ export class RabbitMQAdapter implements MessageQueuePort {
         this.channel = null;
     }
 
+    async sendMessage(queueName: string, message: any) {
+        await this.channel?.assertQueue(queueName)
+        const message_ = JSON.stringify(message)
+        if (this.channel?.sendToQueue(queueName, Buffer.from(message_))) {
+            this.logger.info(`Message sent to queue ${queueName} - ${message_}`)
+        }
+    }
+
     async connectAndConsume(queueName: string): Promise<void> {
         const connection = await amqp.connect(this.appConfig.RABBIT_MQ_URL);
         const channel = await connection.createChannel();

@@ -11,10 +11,6 @@ export default class AppConfig {
         });
     }
 
-    static get SECRET_KEY(): string {
-        return process.env.EXPRESS_APP_SECRET_KEY as string
-    }
-
     static get SERVER_PORT(): string {
         return process.env.EXPRESS_APP_SERVER_PORT as string || '3000'
     }

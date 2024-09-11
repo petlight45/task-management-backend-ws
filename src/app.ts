@@ -6,11 +6,11 @@ import {clientSocketEventHandler} from "./application/socket/handler";
 import createAppSocketServer from "./application/socket";
 
 
-const logger = container.resolve('logger')
+export const logger = container.resolve('logger')
 
 const app = express();
 const server = http.createServer(app);
-const io = createAppSocketServer(server, logger)
+const io = createAppSocketServer(server)
 
 // Set the io instance in the DI container
 
@@ -26,17 +26,17 @@ io.on("connection", (socket) => {
         IP Address: ${clientIp}
         Handshake: ${JSON.stringify(socket.handshake)} 
     `);
+    const notificationPort = container.resolve('notificationPort');
+    const authServicePort = container.resolve('authServicePort');
     clientSocketEventHandler(socket, notificationPort, authServicePort, logger);
 });
-// Resolving needed ports
-const notificationPort = container.resolve('notificationPort');
-const authServicePort = container.resolve('authServicePort');
-const messageQueuePort = container.resolve('messageQueuePort');
+
 const appConfig = container.resolve('appConfig');
-
+export const serverPort = appConfig.SERVER_PORT
 // Set up RabbitMQ listener
-messageQueuePort.connectAndConsume(appConfig.MESSAGE_QUEUE_NAME).catch((err) => logger.error(err as string | Error)).then((res) => logger.info("Successfully connected to message queue"))
 
-server.listen(appConfig.SERVER_PORT, () => {
-    logger.info(`Server running on port ${appConfig.SERVER_PORT}`);
-});
+export const startApp = async (): Promise<void> => {
+    const messageQueuePort = container.resolve('messageQueuePort');
+    await messageQueuePort.connectAndConsume(appConfig.MESSAGE_QUEUE_NAME).catch((err) => logger.error(err as string | Error)).then((res) => logger.info("Successfully connected to message queue"))
+};
+export default server;

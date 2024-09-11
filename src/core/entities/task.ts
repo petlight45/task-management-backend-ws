@@ -20,7 +20,13 @@ export default class Task {
     description?: string;
 
     constructor(params: TaskParams) {
-        Object.assign(this, params);
+        this._id = params._id
+        this.name = params.name
+        this.ownerId = params.ownerId
+        this.assigneeId = params.assigneeId
+        this.dueDate = params.dueDate
+        this.state = params.state
+        this.description = params.description
     }
 
     get id() {
