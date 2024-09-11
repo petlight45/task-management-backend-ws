@@ -1,6 +1,6 @@
 # Task Management Project
 
-This project is a Node.js Socket.io server built with Express and TypeScript, following Hexagonal Architecture and using Awilix for Dependency Injection. It employs RabbitMQ as a message broker for asynchronous communication with a HTTP service, uses Mongoose for database operations, and Jest for unit testing.
+This project is a Node.js Socket.io server built with Express and TypeScript, following Hexagonal Architecture and using Awilix for Dependency Injection. It employs RabbitMQ as a message broker for asynchronous communication with a HTTP service and  Jest for unit testing.
 
 ## Features
 
@@ -25,7 +25,7 @@ To get started with this project, follow these steps:
 
    ```bash
    https://github.com/petlight45/task-management-backend-ws.git
-   cd task-management-backend-http
+   cd task-management-backend-ws
    
 ## Configuration
    
